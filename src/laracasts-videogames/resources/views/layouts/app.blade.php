@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Laracasts Video Games</title>
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body class="bg-gray-900 text-white">
@@ -13,6 +14,11 @@
                 <a href="/">
                     <img src="/laracasts-logo.svg" alt="laracasts" class="w-32 flex-none">
                 </a>
+                <ul class="flex ml-16 space-x-8">
+                    <li><a href="#" class="hover:text-gray-400">Games</a></li>
+                    <li><a href="#" class="hover:text-gray-400">Reviews</a></li>
+                    <li><a href="#" class="hover:text-gray-400">Coming Soon</a></li>
+                </ul>
             </div>
         </nav>
     </header>
