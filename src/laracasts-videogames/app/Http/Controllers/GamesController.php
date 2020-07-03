@@ -15,44 +15,8 @@ class GamesController extends Controller
      */
     public function index()
     {
-        $before = Carbon::now()->subMonths(2)->timestamp;
-        $after = Carbon::now()->addMonths(2)->timestamp;
         $current = Carbon::now()->timestamp;
         $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
-
-        $popularGames = Http::withHeaders(config('services.igdb'))
-            ->withOptions([
-                'body' => "
-                    fields name, cover.url, first_release_date, popularity, platforms.abbreviation, rating;
-                    where platforms = (48,49,130,6)
-                    & (first_release_date >= {$before}
-                    & first_release_date <  {$after});
-                    sort popularity desc;
-                    limit 12;
-                "
-            ])
-            ->get('https://api-v3.igdb.com/games/')
-            ->json();
-
-//        dump($popularGames);
-
-        $recentlyReviewed = Http::withHeaders(config('services.igdb'))
-            ->withOptions([
-                'body' => "
-                    fields name, cover.url, first_release_date, popularity,
-                    platforms.abbreviation, rating, rating_count, summary;
-                    where platforms = (48,49,130,6)
-                    & (first_release_date >= {$before}
-                    & first_release_date <  {$current}
-                    & rating_count > 5);
-                    sort popularity desc;
-                    limit 3;
-                "
-            ])
-            ->get('https://api-v3.igdb.com/games/')
-            ->json();
-
-//        dump($recentlyReviewed);
 
         $mostAnticipated = Http::withHeaders(config('services.igdb'))
             ->withOptions([
@@ -89,8 +53,6 @@ class GamesController extends Controller
 //        dump($comingSoon);
 
         return view('index', [
-            'popularGames' => $popularGames,
-            'recentlyReviewed' => $recentlyReviewed,
             'mostAnticipated' => $mostAnticipated,
             'comingSoon' => $comingSoon,
         ]);
