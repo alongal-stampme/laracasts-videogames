@@ -18,6 +18,8 @@ class GamesController extends Controller
         $current = Carbon::now()->timestamp;
         $afterFourMonths = Carbon::now()->addMonths(4)->timestamp;
 
+        $mostAnticipated = [];
+        /*
         $mostAnticipated = Http::withHeaders(config('services.igdb'))
             ->withOptions([
                 'body' => "
@@ -32,9 +34,12 @@ class GamesController extends Controller
             ])
             ->get('https://api-v3.igdb.com/games/')
             ->json();
+        */
 
 //        dump($mostAnticipated);
 
+        $comingSoon = [];
+        /*
         $comingSoon = Http::withHeaders(config('services.igdb'))
             ->withOptions([
                 'body' => "
@@ -49,6 +54,7 @@ class GamesController extends Controller
             ])
             ->get('https://api-v3.igdb.com/games/')
             ->json();
+        */
 
 //        dump($comingSoon);
 
