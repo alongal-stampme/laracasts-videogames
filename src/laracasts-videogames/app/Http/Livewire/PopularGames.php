@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
@@ -16,7 +17,7 @@ class PopularGames extends Component
         $before = Carbon::now()->subMonths(2)->timestamp;
         $after = Carbon::now()->addMonths(2)->timestamp;
 
-        $this->popularGames = Cache::remember(
+        $popularGamesUnformatted = Cache::remember(
             'popular-games',
             $seconds = 7,
             function () use ($before, $after) {
@@ -36,10 +37,27 @@ class PopularGames extends Component
                     ->get('https://api-v3.igdb.com/games/')
                     ->json();
             });
+
+//        dump($this->formatForView($popularGamesUnformatted));
+
+        $this->popularGames = $this->formatForView($popularGamesUnformatted);
     }
 
     public function render()
     {
         return view('livewire.popular-games');
+    }
+
+    private function formatForView($games)
+    {
+        return collect($games)->map(function ($game) {
+            return collect($game)->merge([
+                'coverImageUrl' => Str::replaceFirst('thumb', 'cover_big', $game['cover']['url']),
+                'rating' => isset($game['rating']) ? round($game['rating']) . '%' : null,
+                'platforms' => collect($game['platforms'])
+                    ->pluck('abbreviation')
+                    ->implode(', '),
+            ]);
+        })->toArray();
     }
 }
