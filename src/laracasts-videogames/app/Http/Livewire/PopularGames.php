@@ -38,6 +38,7 @@ class PopularGames extends Component
                     ->json();
             });
 
+//        dump($popularGamesUnformatted);
 //        dump($this->formatForView($popularGamesUnformatted));
 
         $this->popularGames = $this->formatForView($popularGamesUnformatted);
